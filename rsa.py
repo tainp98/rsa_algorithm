@@ -2,10 +2,9 @@ from decimal import Decimal
 import random
 
 class RSA:
-    def __init__(self):
-        pass
-    def set_value(self, anchor, text):
+    def __init__(self, anchor,accuracy, text):
         self.anchor = anchor
+        self.accuracy = accuracy
         self.text = text
     def gcd(self,a,b): 
         if b==0: 
@@ -24,7 +23,7 @@ class RSA:
         q = m
         flag = True
         i = 0
-        random_numbers = random.sample(range(n),20)
+        random_numbers = random.sample(range(n),self.accuracy)
         while flag:
             a = random_numbers[i]
             if (a**q)%n == 1:
