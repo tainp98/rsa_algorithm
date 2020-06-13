@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtGui import * 
-from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit,
+from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QMessageBox,
                              QInputDialog, QApplication)
 import sys
 from rsa import RSA
@@ -19,6 +19,12 @@ class Example(QWidget):
         self.label1.setFont(QFont('Arial',10))
         self.le1 = QLineEdit(self)
         self.le1.move(130, 22)
+
+        self.labelac = QLabel('error 1/4^',self)
+        self.labelac.move(330,20)
+        self.labelac.setFont(QFont('Arial',10))
+        self.leac = QLineEdit(self)
+        self.leac.move(390, 22)
 
         self.label2 = QLabel('input text',self)
         self.label2.move(20,76)
@@ -88,27 +94,43 @@ class Example(QWidget):
         self.le5.resize(900,25)
         self.setGeometry(50, 50, 1050, 650)
         self.setWindowTitle('RSA_Algorithm')
+        
+
+        self.btn2 = QPushButton('clear', self)
+        self.btn2.move(20, 320)
+        self.btn2.clicked.connect(self.showDialog2)
         self.show()
-
     def showDialog(self):
-        rsa1 = RSA()
+        
         self.anchor = int(self.le1.text())
-        self.text = self.le2.text()
-        rsa1.set_value(self.anchor, self.text)
-        rsa1.create_key()
-        self.ciphertext = rsa1.encrypt([rsa1.e,rsa1.n],rsa1.text)
-        self.plaintext = rsa1.decrypt([rsa1.d,rsa1.n],self.ciphertext)
-        self.ciphertext = [chr(a) for a in self.ciphertext]
-        a = ''.join(self.ciphertext)
-        self.le3.setText(str(self.text))
-        self.le4.setText(str(a))
-        self.le5.setText(str(self.plaintext))
-        self.lep.setText(str(rsa1.p))
-        self.leq.setText(str(rsa1.q))
-        self.len.setText(str(rsa1.n))
-        self.lee.setText(str(rsa1.e))
-        self.led.setText(str(rsa1.d))
-
+        self.accuracy = int(self.leac.text())
+        if(self.anchor < self.accuracy):
+            QMessageBox.about(self,"ERROR","need threshold > accuracy")
+        else:
+            self.text = self.le2.text()
+            rsa1 = RSA(self.anchor,self.accuracy,self.text)
+            rsa1.create_key()
+            self.ciphertext = rsa1.encrypt([rsa1.e,rsa1.n],rsa1.text)
+            self.plaintext = rsa1.decrypt([rsa1.d,rsa1.n],self.ciphertext)
+            self.ciphertext = [chr(a) for a in self.ciphertext]
+            a = ''.join(self.ciphertext)
+            self.le3.setText(str(self.text))
+            self.le4.setText(str(a))
+            self.le5.setText(str(self.plaintext))
+            self.lep.setText(str(rsa1.p))
+            self.leq.setText(str(rsa1.q))
+            self.len.setText(str(rsa1.n))
+            self.lee.setText(str(rsa1.e))
+            self.led.setText(str(rsa1.d))
+    def showDialog2(self):
+        self.le3.setText('')
+        self.le4.setText('')
+        self.le5.setText('')
+        self.lep.setText('')
+        self.leq.setText('')
+        self.len.setText('')
+        self.lee.setText('')
+        self.led.setText('')
 
 def main():
     app = QApplication(sys.argv)
