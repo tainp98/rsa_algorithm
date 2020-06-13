@@ -45,9 +45,11 @@ python/python3 -m pip install pyqt5(on Ubuntu)
 2. Label and Button
    - Input:
      - Label `threshold` : threshold to create 2 prime numbers
+     - Label `error 1/4^` : setup error for algorithm
      - Label `input text` : plaintext to exchange
    - Output:
      - Button `output` : to generate output
+     - Button `clear` : clear output
      - Label `p-q-n-e-d` : the corresponding values in the rsa-algorithm
      - Label `plaintext` : plaintext to encrypt
      - Label `ciphertext` : ciphertext after encrypt
